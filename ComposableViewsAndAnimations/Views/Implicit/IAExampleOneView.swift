@@ -34,7 +34,9 @@ struct IAExampleOneView: View {
                 Circle()
                     .foregroundColor(.red)
                     .scaleEffect(scaleFactor)
-
+                    .onTapGesture {
+                        secondTimer.upstream.connect().cancel()
+                    }
 //                    .onTapGesture {
 //                        if scaleFactor > 0.2 {
 //                            // Reduce the size of the circle by a tenth
