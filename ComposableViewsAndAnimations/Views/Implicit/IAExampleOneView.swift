@@ -19,6 +19,7 @@ struct IAExampleOneView: View {
     
     // Initialize a timer that will fire in one second
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let secondTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     // Whether to apply the animation
     @State private var useAnimation = false
@@ -33,15 +34,18 @@ struct IAExampleOneView: View {
                 Circle()
                     .foregroundColor(.red)
                     .scaleEffect(scaleFactor)
-                    .onTapGesture {
-                        if scaleFactor > 0.2 {
-                            // Reduce the size of the circle by a tenth
-                            scaleFactor -= 0.1
-                        } else {
-                            // Make sure the button doesn't entirely disappear
-                            scaleFactor = 1
-                        }
-                    }
+
+//                    .onTapGesture {
+//                        if scaleFactor > 0.2 {
+//                            // Reduce the size of the circle by a tenth
+//                            scaleFactor -= 0.1
+//                        } else {
+//                            // Make sure the button doesn't entirely disappear
+//                            scaleFactor = 1
+//                        }
+//                    }
+                   
+
                 // When useAnimation is true, the default animation effect will be used.
                 // When useAnimation is false, there will be no animation.
 //                .animation(useAnimation ? .default : .none)
@@ -55,16 +59,28 @@ struct IAExampleOneView: View {
                     }
                 }
             }
-            .onReceive(timer) { input in
+//            .onReceive(timer) { input in
+//
+//                // Set the flag to enable animations
+//                useAnimation = true
+//
+//                // Stop the timer from continuing to fire
+//                timer.upstream.connect().cancel()
+//
+//            }
+            .onReceive(secondTimer) {
+                input in
                 
-                // Set the flag to enable animations
                 useAnimation = true
                 
-                // Stop the timer from continuing to fire
-                timer.upstream.connect().cancel()
-                
+                    if scaleFactor > 0.2 {
+                        // Reduce the size of the circle by a tenth
+                        scaleFactor -= 0.1
+                    } else {
+                        // Make sure the button doesn't entirely disappear
+                        scaleFactor = 1
+                    }
             }
-            
             
         }
         
@@ -84,3 +100,4 @@ struct IAExampleOneView_Previews: PreviewProvider {
         IAExampleOneView(showThisView: .constant(true))
     }
 }
+
